@@ -1,0 +1,4 @@
+rootProject.name = 'gradleAndCucumberJVM'
+
+include "testModule:functionalTests", "testModule:testCore"
+

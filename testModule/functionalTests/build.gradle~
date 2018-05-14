@@ -1,0 +1,141 @@
+//specify the plugins
+apply plugin: 'java'
+// adds 'test' task
+
+sourceCompatibility = 1.5
+version = '1.0'
+
+//mention repository. These are similar to maven as gradle took this feature from maven itself and still uses its repos
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+//mention dependencies that need to be resolved
+//dependencies under compile are resolved before compiling the code
+//dependencies under testCompile are resolved while running the tests
+//dependencies under providedCompile are provided at run time by a container
+
+dependencies {
+//    classpath "net.saliman:gradle-cobertura-plugin:1.2.0"
+//    classpath 'com.github.ben-manes:gradle-versions-plugin:0.3'
+//    classpath 'net.saliman:gradle-properties-plugin:1.2.0'
+
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+    compile 'org.projectlombok:lombok:0.10.8'
+    compile 'org.seleniumhq.selenium:selenium-java:2.35.0'
+    compile 'org.seleniumhq.selenium:selenium-firefox-driver:2.33.0'
+//    compile project(':testModules:testCore')
+
+    compile group: 'info.cukes', name: 'cucumber-java', version: '1.1.3'
+    testCompile 'info.cukes:cucumber-java:1.1.2'
+    testCompile 'info.cukes:cucumber-core:1.1.2'
+    testCompile 'info.cukes:cucumber-html:0.2.3'
+    testCompile 'info.cukes:cucumber-junit:1.1.2'
+    testCompile 'info.cukes:cucumber-jvm:1.1.2'
+    testCompile 'info.cukes:cucumber-jvm-deps:1.0.3'
+    testCompile 'junit:junit:4.10'
+    testCompile 'org.testng:testng:6.1.1'
+//    testCompile project(':testModules:testCore')
+    testCompile 'org.springframework:spring-test:3.1.1.RELEASE',
+            'com.google.inject:guice:3.0',
+            'postgresql:postgresql:9.0-801.jdbc4'
+
+    compile project(':testModule:testCore')
+}
+
+//mention the name for the jar that is created after build
+
+jar {
+    baseName = 'gs-gradle'
+    version = '0.1.0'
+}
+
+//mention different tasks that you want to run using commandLine tool
+
+//wrapper task let you build a project even w/o downloading gradle
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.11'
+}
+
+//getHomeDir gives the GRADLE_HOME
+
+task getHomeDir << {
+    println gradle.gradleHomeDir
+}
+
+task runCucumberScenario(type: Test) {
+    dependsOn assemble, compileTestJava
+    doLast {
+
+        javaexec {
+            System.properties.get('browser', 'firefox')
+            systemProperties System.properties
+            main = "cucumber.api.cli.Main"
+            classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
+            args = ['--glu', 'features', '--tags', '@cucumber', '--tags', '~@WIP', '/src/test/resource/features/SearchTest.feature']
+        }
+    }
+}
+
+//runCucumberScenario.doFirst() {
+//    buildTask.execute()
+//}
+
+configurations {
+    cucumberRuntime {
+        extendsFrom testRuntime
+    }
+}
+
+//do mention type is Test
+task testNGTests(type: Test) {
+    dependsOn assemble, compileTestJava
+    // enable TestNG support (default is JUnit)
+    useTestNG() {
+        // set a system property for the test JVM(s)
+        systemProperties['browser'] = 'firefox'
+
+        suites 'testModules/functionalTests/src/test/java/functional/testNGTests.xml'
+    }
+
+    // explicitly include or exclude tests
+//    include 'testModules/functionalTests/src/test/java/functional/**'
+
+    // show standard out and standard error of the test JVM(s) on the console
+    testLogging.showStandardStreams = true
+
+    // set heap size for the test JVM(s)
+    minHeapSize = "128m"
+    maxHeapSize = "512m"
+
+    // set JVM arguments for the test JVM(s)
+    jvmArgs '-XX:MaxPermSize=256m'
+
+    // listen to events in the test execution lifecycle
+    beforeTest { descriptor ->
+        logger.lifecycle("Running test: " + descriptor)
+    }
+
+    // listen to standard out and standard error of the test JVM(s)
+    onOutput { descriptor, event ->
+        logger.lifecycle("Test: " + descriptor + " produced standard out/err: " + event.message)
+    }
+
+    options {
+        listeners << 'org.uncommons.reportng.HTMLReporter'
+        listeners << 'org.uncommons.reportng.JUnitXMLReporter'
+    }
+//    workingDir = 'build/'
+}
+
+// refer http://www.gradle.org/docs/current/dsl/org.gradle.api.tasks.testing.Test.html
+
+
+//if task depends on some other task
+
+//testNGTests.doFirst() {
+//    buildTask.execute()
+//}

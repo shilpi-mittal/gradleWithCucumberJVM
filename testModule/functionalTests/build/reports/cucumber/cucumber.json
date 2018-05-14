@@ -1,0 +1,126 @@
+[
+  {
+    "line": 1,
+    "elements": [
+      {
+        "line": 4,
+        "name": "",
+        "description": "",
+        "type": "background",
+        "keyword": "Background",
+        "steps": [
+          {
+            "result": {
+              "duration": 3397289602,
+              "status": "passed"
+            },
+            "line": 5,
+            "name": "I access home page",
+            "match": {
+              "location": "searchTestSteps.i_access_home_page()"
+            },
+            "keyword": "Given "
+          }
+        ]
+      },
+      {
+        "before": [
+          {
+            "result": {
+              "duration": 4041844042,
+              "status": "passed"
+            },
+            "match": {
+              "location": "searchTestSteps.setup()"
+            }
+          }
+        ],
+        "line": 8,
+        "name": "verify search functionality",
+        "description": "",
+        "id": "verify-basic-search-functionality-of-google;verify-search-functionality",
+        "type": "scenario",
+        "keyword": "Scenario",
+        "steps": [
+          {
+            "result": {
+              "duration": 55511875,
+              "status": "passed"
+            },
+            "line": 9,
+            "name": "I verify logo is displayed",
+            "match": {
+              "location": "searchTestSteps.I_verify_logo_is_displayed()"
+            },
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 58365338,
+              "status": "passed"
+            },
+            "line": 10,
+            "name": "I enter search parameter \"hello\"",
+            "match": {
+              "arguments": [
+                {
+                  "val": "hello",
+                  "offset": 26
+                }
+              ],
+              "location": "searchTestSteps.I_enter_search_parameter(String)"
+            },
+            "keyword": "When "
+          },
+          {
+            "result": {
+              "duration": 12978610,
+              "status": "passed"
+            },
+            "line": 11,
+            "name": "I hit enter",
+            "match": {
+              "location": "searchTestSteps.I_hit_enter()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 2958619,
+              "status": "passed"
+            },
+            "line": 12,
+            "name": "I verify I am taken to new page",
+            "match": {
+              "location": "searchTestSteps.I_verify_I_am_taken_to_new_page()"
+            },
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 1065606709,
+              "status": "passed"
+            },
+            "line": 13,
+            "name": "I verify search results are displayed",
+            "match": {
+              "location": "searchTestSteps.I_verify_search_results_are_displayed()"
+            },
+            "keyword": "And "
+          }
+        ],
+        "tags": [
+          {
+            "line": 7,
+            "name": "@cucumber"
+          }
+        ]
+      }
+    ],
+    "name": "verify basic search functionality of google",
+    "description": "just go to home page and enter search parameter, hit enter and check search results displayed.",
+    "id": "verify-basic-search-functionality-of-google",
+    "keyword": "Feature",
+    "uri": "SearchTest.feature"
+  }
+]
