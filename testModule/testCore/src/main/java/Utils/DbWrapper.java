@@ -6,9 +6,9 @@ import java.util.Date;
 import static java.lang.System.getProperty;
 
 public class DbWrapper {
-  public static final String DEFAULT_DB_URL = "jdbc:postgresql://localhost:5432/open_lmis";
-  public static final String DEFAULT_DB_USERNAME = "postgres";
-  public static final String DEFAULT_DB_PASSWORD = "p@ssw0rd";
+  public static final String DEFAULT_DB_URL = "<db_url>";
+  public static final String DEFAULT_DB_USERNAME = "<username>";
+  public static final String DEFAULT_DB_PASSWORD = "<password>";
 
   Connection connection;
 
