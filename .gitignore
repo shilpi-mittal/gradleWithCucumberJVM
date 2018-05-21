@@ -1,3 +1,11 @@
+/.gradle/
+build/
+out/
+dist/
+generated/
+classes/
+logs/*
+
 # Compiled class file
 *.class
 
